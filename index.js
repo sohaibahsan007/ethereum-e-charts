@@ -1,7 +1,7 @@
 // Initialize the echarts instance based on the prepared dom
 var myChart = echarts.init(document.getElementById("main"), "dark");
 
-$.get("data.csv", function (csvStr) {
+$.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
   // Specify the configuration items and data for the chart
   const data = parseDataByColumns(csvStr);
   const dateList = JSON.parse(JSON.stringify(data))?.map((d) => d?.Date);
