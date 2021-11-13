@@ -1,5 +1,5 @@
 // Initialize the echarts instance based on the prepared dom
-var myChart = echarts.init(document.getElementById("main"), "dark");
+const myChart = echarts.init(document.getElementById("echarts-1"), "dark");
 
 $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
   // Specify the configuration items and data for the chart
@@ -11,7 +11,7 @@ $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6
   const rateList = JSON.parse(JSON.stringify(data))?.map((d) =>
     parseInt(d?.["Issuance Rate"]?.replaceAll("%", ""))
   );
-  var option = {
+  const option = {
     title: {
       text: "Ethereum's Historical and Projected Issuance Rate",
       textAlign: 'center',
