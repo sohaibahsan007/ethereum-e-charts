@@ -3,9 +3,116 @@
 $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
   // Specify the configuration items and data for the chart
   const data = parseDataByColumns(csvStr);
-
   // draw EChart 1 - Title Ethereum's Historical and Projected Issuance Rate
   drawEChart1(data);
+});
+
+$.get("data.csv", function (csvStr) {
+  // Specify the configuration items and data for the chart
+  let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+  headers?.forEach(h => {
+    const index = headers?.findIndex(header => header === h);
+    const _d = [];
+    data?.forEach(d => {
+      _d.push(d[index]);
+    });
+    array_data[h] = _d;
+  });
+  headers = headers?.slice(1);
+  // draw EChart 2
+  drawEChart2(array_data,title,headers);
+});
+
+$.get("data-2.csv", function (csvStr) {
+  // Specify the configuration items and data for the chart
+    let data = Papa.parse(csvStr, {
+      skipEmptyLines: true,
+      header: false
+    })?.data;
+  const title = data?.[0]?.[1];
+  const array_data = [];
+  array_data['Date'] = data?.[2]?.slice(2);
+  data = data?.slice(3);
+  data?.forEach(d => {
+    array_data[d[1]] = d.slice(2);
+  });
+  const headers = Object.keys(array_data);
+  // draw EChart 3
+  drawEChart3(array_data,title,headers);
+});
+
+$.get("data-3.csv", function (csvStr) {
+  // Specify the configuration items and data for the chart
+     let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+  headers?.forEach(h => {
+    const index = headers?.findIndex(header => header === h);
+    const _d = [];
+    data?.forEach(d => {
+      _d.push(d[index]);
+    });
+    array_data[h] = _d;
+  });
+  headers = headers?.slice(1);
+  // draw EChart 4
+  drawEChart4(array_data,title,headers);
+});
+$.get("data-4.csv", function (csvStr) {
+  // Specify the configuration items and data for the chart
+     let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+  headers?.forEach(h => {
+    const index = headers?.findIndex(header => header === h);
+    const _d = [];
+    data?.forEach(d => {
+      _d.push(d[index]);
+    });
+    array_data[h || 'Date'] = _d;
+  });
+  headers = headers?.slice(1)?.sort((a, b) => a?.localeCompare(b?.firstname));
+  // draw EChart 5
+  drawEChart5(array_data,title,headers);
+});
+$.get("data-5.csv", function (csvStr) {
+  // Specify the configuration items and data for the chart
+     let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+  headers?.forEach(h => {
+    const index = headers?.findIndex(header => header === h);
+    const _d = [];
+    data?.forEach(d => {
+      _d.push(d[index]);
+    });
+    array_data[h || 'Date'] = _d;
+  });
+  headers = headers?.slice(1)?.sort((a, b) => a?.localeCompare(b?.firstname));
+  // draw EChart 6
+  drawEChart6(array_data,title,headers);
 });
 function parseDataByColumns(csvStr) {
   const rawData = Papa.parse(csvStr, {
@@ -17,6 +124,347 @@ function parseDataByColumns(csvStr) {
     })
     ?.filter((d) => d?.Date);
   return data;
+}
+function parseNumbers(values){
+  return values?.map((d) =>
+    parseInt(d?.replaceAll(",", ""))
+  );
+}
+function drawEChart6(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-6"));
+  const series = [];
+  delete data?.Date;
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: 'Year #',
+      nameLocation: 'middle',
+      nameGap: '40',
+      nameTextStyle: {
+        color: '#333'
+      }
+
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0%'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '90',
+    },
+    yAxis: {
+      type: 'value',
+      name: 'Inflationary Rewards Plus Emissions (in millions)',
+      nameLocation: 'middle',
+      nameGap: '70',
+      nameTextStyle: {
+        color: '#333'
+      },
+      axisLabel: {
+        formatter: function (value, index) {
+          return value/1000000;
+      }
+      }
+    },
+    series: series,
+  };
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+}
+function drawEChart5(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-5"));
+  const series = [];
+  const yAxis = [];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    const index = headers?.findIndex(header => header === h);
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      yAxisIndex: index,
+      emphasis: {
+        focus: "series",
+      },
+    });
+    yAxis.push(
+      {
+        type: 'value',
+        name: index === 0 ? 'Annual Money Supply Growth Rate': 'Allocated Supply',
+        nameLocation: 'middle',
+        nameGap: index === 0 ?'50': '100',
+        nameTextStyle: {
+          color: '#333'
+        },
+        axisLabel: index === 0 ? {
+          formatter: function (value, index) {
+              return value + '%';
+          },
+        }: {},
+      }
+    );
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: 'Year',
+      nameLocation: 'middle',
+      nameGap: '40',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '80',
+    },
+    yAxis,
+    series: series,
+  };
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+}
+function drawEChart4(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-4"));
+  const series = [];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      lineStyle: {
+        type: h === 'Current Allocated' ? 'solid' :'dashed'
+      },
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: 'Year',
+      nameLocation: 'middle',
+      nameGap: '40',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '80',
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: series,
+  };
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+}
+function drawEChart3(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-3"));
+  const series = [];
+  delete data?.Date;
+  headers?.filter(h => h != 'Date')?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: 'Year',
+      nameLocation: 'middle',
+      nameGap: '40',
+      nameTextStyle: {
+        color: '#333'
+      }
+
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0%'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '60',
+      bottom: '110',
+    },
+    yAxis: {
+      type: 'value',
+      name: 'maximun inflation + emission per year',
+      nameLocation: 'middle',
+      nameGap: '100',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    series: series,
+  };
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+}
+function drawEChart2(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-2"));
+  const series = [];
+  const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    const index = headers?.findIndex(header => header === h);
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      stack: 'Total',
+      areaStyle: {
+        opacity: 0.4,
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: color[index]
+          },
+          {
+            offset: 1,
+            color: color[index]
+          }
+        ])
+      },
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '80'
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: series,
+  };
+
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
 }
 function drawEChart1(data){
 
@@ -224,3 +672,4 @@ function drawEChart1(data){
   // Display the chart using the configuration items and data just specified.
   myChart.setOption(option);
 }
+
