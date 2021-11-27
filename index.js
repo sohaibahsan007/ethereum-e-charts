@@ -1,9 +1,25 @@
 // Initialize the echarts instance based on the prepared dom
-const myChart = echarts.init(document.getElementById("echarts-1"), "dark");
 
 $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
   // Specify the configuration items and data for the chart
   const data = parseDataByColumns(csvStr);
+
+  // draw EChart 1 - Title Ethereum's Historical and Projected Issuance Rate
+  drawEChart1(data);
+});
+function parseDataByColumns(csvStr) {
+  const rawData = Papa.parse(csvStr, {
+    header: true,
+  }).data;
+  const data = rawData
+    ?.sort(function (a, b) {
+      return Number(new Date(a?.Date)) - Number(new Date(b?.Date));
+    })
+    ?.filter((d) => d?.Date);
+  return data;
+}
+function drawEChart1(data){
+
   const dateList = JSON.parse(JSON.stringify(data))?.map((d) => d?.Date);
   const supplyList = JSON.parse(JSON.stringify(data))?.map((d) =>
     parseInt(d?.Supply?.replaceAll(",", ""))
@@ -11,6 +27,8 @@ $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6
   const rateList = JSON.parse(JSON.stringify(data))?.map((d) =>
     parseInt(d?.["Issuance Rate"]?.replaceAll("%", ""))
   );
+  const myChart = echarts.init(document.getElementById("echarts-1"), "dark");
+
   const option = {
     title: {
       text: "Ethereum's Historical and Projected Issuance Rate",
@@ -205,15 +223,4 @@ $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6
 
   // Display the chart using the configuration items and data just specified.
   myChart.setOption(option);
-});
-function parseDataByColumns(csvStr) {
-  const rawData = Papa.parse(csvStr, {
-    header: true,
-  }).data;
-  const data = rawData
-    ?.sort(function (a, b) {
-      return Number(new Date(a?.Date)) - Number(new Date(b?.Date));
-    })
-    ?.filter((d) => d?.Date);
-  return data;
 }
