@@ -1,11 +1,11 @@
 // Initialize the echarts instance based on the prepared dom
 
-$.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
-  // Specify the configuration items and data for the chart
-  const data = parseDataByColumns(csvStr);
-  // draw EChart 1 - Title Ethereum's Historical and Projected Issuance Rate
-  drawEChart1(data);
-});
+// $.get("https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSNcmrLtblII19RSmwU6rE6qJVERfc1h-z62dqxptHs9eOurLTlhTGMo1SAVVXIVS3JYl8BBcpcvk/pub?gid=1497781994&single=true&output=csv", function (csvStr) {
+//   // Specify the configuration items and data for the chart
+//   const data = parseDataByColumns(csvStr);
+//   // draw EChart 1 - Title Ethereum's Historical and Projected Issuance Rate
+//   drawEChart1(data);
+// });
 
 $.get("data.csv", function (csvStr) {
   // Specify the configuration items and data for the chart
