@@ -227,6 +227,366 @@
 
 const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWQ-hIY86B-xRlAoLPOQc1L0-Dmb59AUtp-_declUDUtr2FEOGjQgDBGP9rJbmiqQcVocGRV1ugxEr/pub?gid=';
 const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
+function parseNumbers(values){
+  return values?.map((d) =>
+    parseFloat(d?.replaceAll(",", ""))
+  );
+}
+function drawEChart6(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-6"));
+  const series = [];
+  delete data?.Date;
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "rect",
+      symbolSize: 2,
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    color,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: 'Year #',
+      nameLocation: 'middle',
+      nameGap: '40',
+      nameTextStyle: {
+        color: '#333'
+      },
+      axisTick:{
+        alignWithLabel: true
+      }
+
+    },
+    tooltip: {
+      trigger: "item",
+    },
+    legend: {
+      data: headers,
+      bottom: '0%'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '90',
+    },
+    yAxis: {
+      type: 'value',
+      name: 'Inflationary Rewards Plus Emissions (in millions)',
+      nameLocation: 'middle',
+      nameGap: '70',
+      max: 1000000000,
+      nameTextStyle: {
+        color: '#333'
+      },
+      axisLabel: {
+        formatter: function (value, index) {
+          return (value/1000000)?.toLocaleString();
+      }
+      }
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
+function drawEChart5(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-5"));
+  const series = [];
+  const yAxis = [];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    const index = headers?.findIndex(header => header === h);
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      yAxisIndex: index,
+      emphasis: {
+        focus: "series",
+      },
+    });
+    yAxis.push(
+      {
+        type: 'value',
+        name: index === 0 ? 'Annual Money Supply Growth Rate': 'Allocated Supply',
+        nameLocation: 'middle',
+        nameGap: index === 0 ?'50': '100',
+        nameTextStyle: {
+          color: '#333'
+        },
+        axisLabel: index === 0 ? {
+          formatter: function (value, index) {
+              return value + '%';
+          },
+        }: {},
+      }
+    );
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick:{
+        alignWithLabel: true
+      }
+    },
+    tooltip: {
+      trigger: "axis",
+      formatter: (params) => {
+        return `
+                  ${params[0]?.axisValue} <br />
+                 ${params[0].marker} ${params[0].seriesName}: ${params[0].value}%<br/>
+                 ${params[1].marker} ${params[1].seriesName}: ${params[1].value}
+                  `;
+      },
+    },
+    legend: {
+      data: headers,
+      bottom: '0'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '80',
+    },
+    yAxis,
+    series: series,
+  };
+  myChart.setOption(option);
+}
+function drawEChart4(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-4"));
+  const series = [];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "none",
+      lineStyle: {
+        type: h === 'Current Allocated' ? 'solid' :'dotted'
+      },
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick:{
+        alignWithLabel: true
+      }
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: '0',
+      data:[
+        {
+          name: 'Current Allocated',
+        },
+        {
+          name: 'Projected Allocated',
+          icon: 'path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z',
+        },
+        {
+          name: 'Total Authorized',
+          icon: 'path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z',
+        }
+      ]
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '70',
+      bottom: '60',
+    },
+    yAxis: {
+      type: 'value',
+      name: '$STORE Tokens Issued',
+      nameLocation: 'middle',
+      nameGap: '100',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
+function drawEChart3(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-3"));
+  const series = [];
+  delete data?.Date;
+  headers?.filter(h => h != 'Date' && !h?.includes('Total Allocated') && !h?.includes('Emissions from Actual Token Sales'))?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "rect",
+      symbolSize: 2,
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    color,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick:{
+        alignWithLabel: true
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+    },
+    legend: {
+      data: headers,
+      bottom: '0%'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '60',
+      bottom: '80',
+    },
+    yAxis: {
+      type: 'value',
+      name: 'maximun inflation + emission per year',
+      nameLocation: 'middle',
+      nameGap: '100',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
+function drawEChart2(data,title,headers){
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-2"));
+  const series = [];
+  const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
+  headers?.forEach(h => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: true,
+      smoothMonotone: "x",
+      symbol: "rect",
+      symbolSize: 2,
+      stack: 'Total',
+      areaStyle: {
+        opacity: 0.4,
+      },
+      emphasis: {
+        focus: "series",
+      },
+    },);
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: 'center',
+      textVerticalAlign: 'auto',
+      left: '50%',
+      top: '4%'
+    },
+    color,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick:{
+        alignWithLabel: true
+      }
+    },
+    tooltip: {
+     trigger: 'item',
+    },
+    legend: {
+      data: headers,
+      bottom: '0'
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: '80'
+    },
+    yAxis: {
+      type: 'value',
+      name: 'Cumulative $STORE Tokens',
+      nameLocation: 'middle',
+      nameGap: '100',
+      nameTextStyle: {
+        color: '#333'
+      }
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
 $.get(url+"0&single=true&output=csv", function (csvStr) {
   let data = Papa.parse(csvStr, {
     skipEmptyLines: true,
@@ -326,349 +686,5 @@ $.get(url+"694509505&single=true&output=csv", function (csvStr) {
   drawEChart6(array_data,title,headers);
 });
 
-function parseNumbers(values){
-  return values?.map((d) =>
-    parseFloat(d?.replaceAll(",", ""))
-  );
-}
-function drawEChart6(data,title,headers){
-  const dateList = data?.Date;
-  const myChart = echarts.init(document.getElementById("echarts-6"));
-  const series = [];
-  delete data?.Date;
-  headers?.forEach(h => {
-    const _data = data?.[h];
-    series.push({
-      data: parseNumbers(_data),
-      type: "line",
-      name: h,
-      smooth: true,
-      smoothMonotone: "x",
-      symbol: "rect",
-      symbolSize: 2,
-      emphasis: {
-        focus: "series",
-      },
-    },);
-  });
-  const option = {
-    title: {
-      text: title,
-      textAlign: 'center',
-      textVerticalAlign: 'auto',
-      left: '50%',
-      top: '4%'
-    },
-    color,
-    xAxis: {
-      type: "category",
-      data: dateList,
-      name: 'Year #',
-      nameLocation: 'middle',
-      nameGap: '40',
-      nameTextStyle: {
-        color: '#333'
-      }
 
-    },
-    tooltip: {
-      trigger: "item",
-    },
-    legend: {
-      data: headers,
-      bottom: '0%'
-    },
-    calculable: true,
-    grid: {
-      show: true,
-      top: '70',
-      bottom: '90',
-    },
-    yAxis: {
-      type: 'value',
-      name: 'Inflationary Rewards Plus Emissions (in millions)',
-      nameLocation: 'middle',
-      nameGap: '70',
-      max: 1000000000,
-      nameTextStyle: {
-        color: '#333'
-      },
-      axisLabel: {
-        formatter: function (value, index) {
-          return (value/1000000)?.toLocaleString();
-      }
-      }
-    },
-    series: series,
-  };
-  myChart.setOption(option);
-}
-function drawEChart5(data,title,headers){
-  const dateList = data?.Date;
-  const myChart = echarts.init(document.getElementById("echarts-5"));
-  const series = [];
-  const yAxis = [];
-  headers?.forEach(h => {
-    const _data = data?.[h];
-    const index = headers?.findIndex(header => header === h);
-    series.push({
-      data: parseNumbers(_data),
-      type: "line",
-      name: h,
-      smooth: true,
-      smoothMonotone: "x",
-      symbol: "none",
-      yAxisIndex: index,
-      emphasis: {
-        focus: "series",
-      },
-    });
-    yAxis.push(
-      {
-        type: 'value',
-        name: index === 0 ? 'Annual Money Supply Growth Rate': 'Allocated Supply',
-        nameLocation: 'middle',
-        nameGap: index === 0 ?'50': '100',
-        nameTextStyle: {
-          color: '#333'
-        },
-        axisLabel: index === 0 ? {
-          formatter: function (value, index) {
-              return value + '%';
-          },
-        }: {},
-      }
-    );
-  });
-  const option = {
-    title: {
-      text: title,
-      textAlign: 'center',
-      textVerticalAlign: 'auto',
-      left: '50%',
-      top: '4%'
-    },
-    xAxis: {
-      type: "category",
-      data: dateList,
-    },
-    tooltip: {
-      trigger: "axis",
-      formatter: (params) => {
-        return `
-                  ${params[0]?.axisValue} <br />
-                 ${params[0].marker} ${params[0].seriesName}: ${params[0].value}%<br/>
-                 ${params[1].marker} ${params[1].seriesName}: ${params[1].value}
-                  `;
-      },
-    },
-    legend: {
-      data: headers,
-      bottom: '0'
-    },
-    calculable: true,
-    grid: {
-      show: true,
-      top: '70',
-      bottom: '80',
-    },
-    yAxis,
-    series: series,
-  };
-  myChart.setOption(option);
-}
-function drawEChart4(data,title,headers){
-  const dateList = data?.Date;
-  const myChart = echarts.init(document.getElementById("echarts-4"));
-  const series = [];
-  headers?.forEach(h => {
-    const _data = data?.[h];
-    series.push({
-      data: parseNumbers(_data),
-      type: "line",
-      name: h,
-      smooth: true,
-      smoothMonotone: "x",
-      symbol: "none",
-      lineStyle: {
-        type: h === 'Current Allocated' ? 'solid' :'dotted'
-      },
-      emphasis: {
-        focus: "series",
-      },
-    },);
-  });
-  const option = {
-    title: {
-      text: title,
-      textAlign: 'center',
-      textVerticalAlign: 'auto',
-      left: '50%',
-      top: '4%'
-    },
-    xAxis: {
-      type: "category",
-      data: dateList,
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    legend: {
-      data: headers,
-      bottom: '0',
-      data:[
-        {
-          name: 'Current Allocated',
-        },
-        {
-          name: 'Projected Allocated',
-          icon: 'path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z',
-        },
-        {
-          name: 'Total Authorized',
-          icon: 'path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z',
-        }
-      ]
-    },
-    calculable: true,
-    grid: {
-      show: true,
-      top: '70',
-      bottom: '60',
-    },
-    yAxis: {
-      type: 'value',
-      name: '$STORE Tokens Issued',
-      nameLocation: 'middle',
-      nameGap: '100',
-      nameTextStyle: {
-        color: '#333'
-      }
-    },
-    series: series,
-  };
-  myChart.setOption(option);
-}
-function drawEChart3(data,title,headers){
-  const dateList = data?.Date;
-  const myChart = echarts.init(document.getElementById("echarts-3"));
-  const series = [];
-  delete data?.Date;
-  headers?.filter(h => h != 'Date' && !h?.includes('Total Allocated') && !h?.includes('Emissions from Actual Token Sales'))?.forEach(h => {
-    const _data = data?.[h];
-    series.push({
-      data: parseNumbers(_data),
-      type: "line",
-      name: h,
-      smooth: true,
-      smoothMonotone: "x",
-      symbol: "rect",
-      symbolSize: 2,
-      emphasis: {
-        focus: "series",
-      },
-    },);
-  });
-
-  const option = {
-    title: {
-      text: title,
-      textAlign: 'center',
-      textVerticalAlign: 'auto',
-      left: '50%',
-      top: '4%'
-    },
-    color,
-    xAxis: {
-      type: "category",
-      data: dateList,
-    },
-    tooltip: {
-      trigger: 'item',
-    },
-    legend: {
-      data: headers,
-      bottom: '0%'
-    },
-    calculable: true,
-    grid: {
-      show: true,
-      top: '60',
-      bottom: '80',
-    },
-    yAxis: {
-      type: 'value',
-      name: 'maximun inflation + emission per year',
-      nameLocation: 'middle',
-      nameGap: '100',
-      nameTextStyle: {
-        color: '#333'
-      }
-    },
-    series: series,
-  };
-  myChart.setOption(option);
-}
-function drawEChart2(data,title,headers){
-  const dateList = data?.Date;
-  const myChart = echarts.init(document.getElementById("echarts-2"));
-  const series = [];
-  const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
-  headers?.forEach(h => {
-    const _data = data?.[h];
-    series.push({
-      data: parseNumbers(_data),
-      type: "line",
-      name: h,
-      smooth: true,
-      smoothMonotone: "x",
-      symbol: "rect",
-      symbolSize: 2,
-      stack: 'Total',
-      areaStyle: {
-        opacity: 0.4,
-      },
-      emphasis: {
-        focus: "series",
-      },
-    },);
-  });
-  const option = {
-    title: {
-      text: title,
-      textAlign: 'center',
-      textVerticalAlign: 'auto',
-      left: '50%',
-      top: '4%'
-    },
-    color,
-    xAxis: {
-      type: "category",
-      data: dateList,
-    },
-    tooltip: {
-     trigger: 'item',
-    },
-    legend: {
-      data: headers,
-      bottom: '0'
-    },
-    calculable: true,
-    grid: {
-      show: true,
-      top: '80'
-    },
-    yAxis: {
-      type: 'value',
-      name: 'Cumulative $STORE Tokens',
-      nameLocation: 'middle',
-      nameGap: '100',
-      nameTextStyle: {
-        color: '#333'
-      }
-    },
-    series: series,
-  };
-  myChart.setOption(option);
-}
 
