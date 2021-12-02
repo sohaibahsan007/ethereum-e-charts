@@ -365,7 +365,7 @@ function drawEChart5(data,title,headers){
         return `
                   ${params[0]?.axisValue} <br />
                  ${params[0].marker} ${params[0].seriesName}: ${params[0].value}%<br/>
-                 ${params[1].marker} ${params[1].seriesName}: ${params[1].value}
+                 ${params[1].marker} ${params[1].seriesName}: ${params[1].value?.toLocaleString()}
                   `;
       },
     },
