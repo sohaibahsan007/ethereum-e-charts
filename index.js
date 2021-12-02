@@ -276,7 +276,7 @@ function drawEChart6(data,title,headers){
 
     },
     tooltip: {
-      trigger: "item",
+       trigger: "axis",
     },
     legend: {
       data: headers,
@@ -497,7 +497,7 @@ function drawEChart3(data,title,headers){
       }
     },
     tooltip: {
-      trigger: 'item',
+      trigger: 'axis',
     },
     legend: {
       data: headers,
@@ -563,7 +563,7 @@ function drawEChart2(data,title,headers){
       }
     },
     tooltip: {
-     trigger: 'item',
+     trigger: 'axis',
     },
     legend: {
       data: headers,
