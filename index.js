@@ -264,7 +264,7 @@ function drawEChart6(data,title,headers){
     xAxis: {
       type: "category",
       data: dateList,
-      name: 'Year #',
+      name: 'Age of Network in Years',
       nameLocation: 'middle',
       nameGap: '40',
       nameTextStyle: {
@@ -511,7 +511,7 @@ function drawEChart3(data,title,headers){
     },
     yAxis: {
       type: 'value',
-      name: 'maximun inflation + emission per year',
+      name: 'Maximun inflation + emission per year',
       nameLocation: 'middle',
       nameGap: '100',
       nameTextStyle: {
@@ -557,7 +557,7 @@ function drawEChart2(data,title,headers){
     color,
     xAxis: {
       type: "category",
-      data: dateList,
+      data: dateList?.map(date => date?.replaceAll(',','-')),
       axisTick:{
         alignWithLabel: true
       }
