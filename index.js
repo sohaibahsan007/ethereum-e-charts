@@ -227,6 +227,9 @@
 
 const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWQ-hIY86B-xRlAoLPOQc1L0-Dmb59AUtp-_declUDUtr2FEOGjQgDBGP9rJbmiqQcVocGRV1ugxEr/pub?gid=';
 const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
+const textStyle= {
+  fontFamily: 'Montserrat'
+}
 function parseNumbers(values){
   return values?.map((d) =>
     parseFloat(d?.replaceAll(",", ""))
@@ -261,6 +264,7 @@ function drawEChart6(data,title,headers){
       top: '4%'
     },
     color,
+    textStyle,
     xAxis: {
       type: "category",
       data: dateList,
@@ -352,6 +356,7 @@ function drawEChart5(data,title,headers){
       left: '50%',
       top: '4%'
     },
+    textStyle,
     xAxis: {
       type: "category",
       data: dateList,
@@ -413,6 +418,7 @@ function drawEChart4(data,title,headers){
       left: '50%',
       top: '4%'
     },
+    textStyle,
     xAxis: {
       type: "category",
       data: dateList,
@@ -488,6 +494,7 @@ function drawEChart3(data,title,headers){
       left: '50%',
       top: '4%'
     },
+    textStyle,
     color,
     xAxis: {
       type: "category",
@@ -554,6 +561,7 @@ function drawEChart2(data,title,headers){
       left: '50%',
       top: '4%'
     },
+    textStyle,
     color,
     xAxis: {
       type: "category",
