@@ -508,13 +508,14 @@ function drawEChart3(data,title,headers){
     },
     legend: {
       data: headers,
-      bottom: '0%'
+      bottom: '0%',
+      itemGap: 15
     },
     calculable: true,
     grid: {
       show: true,
       top: '60',
-      bottom: '80',
+      bottom: '100',
     },
     yAxis: {
       type: 'value',
@@ -575,12 +576,14 @@ function drawEChart2(data,title,headers){
     },
     legend: {
       data: headers,
-      bottom: '0'
+      bottom: '0',
+      itemGap: 15
     },
     calculable: true,
     grid: {
       show: true,
-      top: '80'
+      top: '80',
+      bottom: '100',
     },
     yAxis: {
       type: 'value',
