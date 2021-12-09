@@ -228,7 +228,9 @@
 const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWQ-hIY86B-xRlAoLPOQc1L0-Dmb59AUtp-_declUDUtr2FEOGjQgDBGP9rJbmiqQcVocGRV1ugxEr/pub?gid=';
 const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
 const textStyle= {
-  fontFamily: 'Montserrat'
+  fontFamily: 'Montserrat',
+  fontSize: 10
+
 }
 function parseNumbers(values){
   return values?.map((d) =>
@@ -515,7 +517,7 @@ function drawEChart3(data,title,headers){
     grid: {
       show: true,
       top: '60',
-      bottom: '100',
+      bottom: '80',
     },
     yAxis: {
       type: 'value',
@@ -583,7 +585,7 @@ function drawEChart2(data,title,headers){
     grid: {
       show: true,
       top: '80',
-      bottom: '100',
+      bottom: '60',
     },
     yAxis: {
       type: 'value',
