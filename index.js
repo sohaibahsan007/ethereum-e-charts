@@ -82,7 +82,7 @@
 //           focus: "series",
 //         },
 //         lineStyle: {
-//           width: 3,
+//           width: 2.5,
 //           color: "#4172C3",
 //         },
 //       },
@@ -100,7 +100,7 @@
 //           focus: "series",
 //         },
 //         lineStyle: {
-//           width: 3,
+//           width: 2.5,
 //           color: "#FF990B",
 //         },
 //         markPoint: {
@@ -226,7 +226,14 @@
 // }
 
 const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWQ-hIY86B-xRlAoLPOQc1L0-Dmb59AUtp-_declUDUtr2FEOGjQgDBGP9rJbmiqQcVocGRV1ugxEr/pub?gid=';
-const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
+const color = [
+  '#F54A4A',
+  '#0071C6',
+  '#DE2F8F',
+  '#AF52C7',
+  '#254294',
+  '#12BC81'
+];
 const textStyle= {
   fontFamily: 'Montserrat',
   fontSize: 10
@@ -250,8 +257,11 @@ function drawEChart6(data,title,headers){
       name: h,
       smooth: true,
       smoothMonotone: "x",
-      symbol: "rect",
+      symbol: "none",
       symbolSize: 2,
+      lineStyle: {
+        width: 2.5
+      },
       emphasis: {
         focus: "series",
       },
@@ -334,10 +344,13 @@ function drawEChart5(data,title,headers){
       data: parseNumbers(_data),
       type: "line",
       name: h,
-      smooth: true,
+      smooth: false,
       smoothMonotone: "x",
       symbol: "none",
       yAxisIndex: index,
+      lineStyle: {
+        width: 2.5
+      },
       emphasis: {
         focus: "series",
       },
@@ -418,11 +431,12 @@ function drawEChart4(data,title,headers){
       data: parseNumbers(_data),
       type: "line",
       name: h,
-      smooth: true,
+      smooth: false,
       smoothMonotone: "x",
       symbol: "none",
       lineStyle: {
-        type: h === 'Current Allocated' ? 'solid' :'dotted'
+        type: h === 'Current Allocated' ? 'solid' :'dotted',
+        width: 2.5
       },
       emphasis: {
         focus: "series",
@@ -504,13 +518,16 @@ function drawEChart3(data,title,headers){
       data: parseNumbers(_data),
       type: "line",
       name: h,
-      smooth: true,
+      smooth: false,
       smoothMonotone: "x",
-      symbol: "rect",
+      symbol: "none",
       symbolSize: 2,
       emphasis: {
         focus: "series",
       },
+      lineStyle:{
+        width: 2.5
+      }
     },);
   });
 
@@ -570,7 +587,6 @@ function drawEChart2(data,title,headers){
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-2"));
   const series = [];
-  const color = ['#287AED','#F23B35','#FFB32C','#0D9E4E','#FF6221','#1EB5BD'];
   headers?.forEach(h => {
     const _data = data?.[h];
     series.push({
@@ -579,11 +595,11 @@ function drawEChart2(data,title,headers){
       name: h,
       smooth: true,
       smoothMonotone: "x",
-      symbol: "rect",
+      symbol: "none",
       symbolSize: 2,
       stack: 'Total',
       areaStyle: {
-        opacity: 0.4,
+        opacity: 0.5,
       },
       emphasis: {
         focus: "series",
