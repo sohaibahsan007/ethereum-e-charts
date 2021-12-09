@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+
+<head>
+  <!-- Include the ECharts file you just downloaded -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://sohaibahsan007.github.io/ethereum-e-charts/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .chart {
+      height: 600px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chart" id="echarts-3"></div>
+  <script src="shared.js"></script>
+  <script>
+    function drawEChart3(data, title, headers) {
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-3"));
+  const series = [];
+  headers?.forEach((h) => {
+    const _data = data?.[h];
+    series.push({
+      data: parseNumbers(_data),
+      type: "line",
+      name: h,
+      smooth: false,
+      smoothMonotone: "x",
+      symbol: "none",
+      lineStyle: {
+        type: h === "Current Allocated" ? "solid" : "dotted",
+        width: 2.5,
+      },
+      emphasis: {
+        focus: "series",
+      },
+    });
+  });
+  const option = {
+    title: {
+      text: title,
+      textAlign: "center",
+      textVerticalAlign: "auto",
+      left: "50%",
+      top: "4%",
+    },
+    textStyle,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick: {
+        alignWithLabel: true,
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: "0",
+      itemGap: 15,
+      textStyle: {
+        fontSize: 11,
+        fontFamily: "sans-serif",
+        color: "#6e7079e8",
+      },
+      data: [
+        {
+          name: "Current Allocated",
+        },
+        {
+          name: "Projected Allocated",
+          icon: "path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z",
+        },
+        {
+          name: "Total Authorized",
+          icon: "path://M335 1316 c-63 -28 -125 -122 -125 -191 0 -71 62 -164 127 -192 18 -7 58 -13 90 -13 72 0 125 28 168 88 27 39 30 52 30 117 0 65 -3 78 -30 117 -43 61 -95 88 -170 87 -33 0 -73 -6 -90 -13z, M1035 1313 c-76 -40 -115 -103 -115 -188 0 -121 85 -205 205 -205 121 0 205 84 205 205 0 84 -39 148 -112 186 -46 24 -140 25 -183 2z, M1714 1298 c-61 -42 -94 -102 -94 -173 0 -71 33 -131 94 -172 41 -28 57 -33 107 -33 76 0 115 16 161 68 76 84 76 190 0 274 -46 52 -85 68 -161 68 -50 0 -66 -5 -107 -32z",
+        },
+      ],
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: "70",
+      bottom: "60",
+    },
+    yAxis: {
+      type: "value",
+      name: "$STORE Tokens Issued",
+      nameLocation: "middle",
+      nameGap: "120",
+      nameTextStyle: {
+        color: "#333",
+      },
+      nameTextStyle: {
+        fontSize: 14,
+      },
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
+    // drawEChart3
+$.get(googleSheetUrl + "1834631508&single=true&output=csv", function (csvStr) {
+  // parse data using Papa Parse
+  let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false,
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+
+  // prepapre data
+  headers?.forEach((h) => {
+    const index = headers?.findIndex((header) => header === h);
+    const _d = [];
+    data?.forEach((d) => {
+      _d.push(d[index]);
+    });
+    array_data[h] = _d;
+  });
+  headers = headers?.slice(1);
+
+  // draw data
+  drawEChart3(array_data, title, headers);
+});
+  </script>
+</body>
+</html>

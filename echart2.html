@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+
+<head>
+  <!-- Include the ECharts file you just downloaded -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://sohaibahsan007.github.io/ethereum-e-charts/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .chart {
+      height: 600px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart" id="echarts-2"></div>
+  <script src="shared.js"></script>
+  <script>
+    function drawEChart2(data, title, headers) {
+  const dateList = data?.Date;
+  const myChart = echarts.init(document.getElementById("echarts-2"));
+  const series = [];
+  delete data?.Date;
+  headers
+    ?.filter(
+      (h) =>
+        h != "Date" &&
+        !h?.includes("Total Allocated") &&
+        !h?.includes("Emissions from Actual Token Sales")
+    )
+    ?.forEach((h) => {
+      const _data = data?.[h];
+      series.push({
+        data: parseNumbers(_data),
+        type: "line",
+        name: h,
+        smooth: false,
+        smoothMonotone: "x",
+        symbol: "none",
+        symbolSize: 2,
+        emphasis: {
+          focus: "series",
+        },
+        lineStyle: {
+          width: 2.5,
+        },
+      });
+    });
+
+  const option = {
+    title: {
+      text: title,
+      textAlign: "center",
+      textVerticalAlign: "auto",
+      left: "50%",
+      top: "4%",
+    },
+    textStyle,
+    color,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      axisTick: {
+        alignWithLabel: true,
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: headers,
+      bottom: "0",
+      itemGap: 15,
+      textStyle: {
+        fontSize: 11,
+        fontFamily: "sans-serif",
+        color: "#6e7079e8",
+      },
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: "60",
+      bottom: "80",
+    },
+    yAxis: {
+      type: "value",
+      name: "Maximun inflation + emission per year",
+      nameLocation: "middle",
+      nameGap: "120",
+      nameTextStyle: {
+        color: "#333",
+      },
+      nameTextStyle: {
+        fontSize: 14,
+      },
+    },
+    series: series,
+  };
+  myChart.setOption(option);
+}
+    // drawEChart2
+$.get(googleSheetUrl + "1694942319&single=true&output=csv", function (csvStr) {
+  // parse data using Papa Parse
+  let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false,
+  })?.data;
+  const title = data?.[0]?.[1];
+  const array_data = [];
+  array_data["Date"] = data?.[2]?.slice(2);
+  data = data?.slice(3);
+
+  // prepapre data
+  data?.forEach((d) => {
+    array_data[d[1]] = d.slice(2);
+  });
+  const headers = Object.keys(array_data);
+  // draw EChart 2
+  drawEChart2(array_data, title, headers);
+});
+  </script>
+</body>
+</html>
