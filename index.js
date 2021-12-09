@@ -286,7 +286,13 @@ function drawEChart6(data,title,headers){
     },
     legend: {
       data: headers,
-      bottom: '0%'
+      bottom: '0',
+      itemGap: 15,
+      textStyle:{
+        fontSize: 11,
+        fontFamily: 'sans-serif',
+        color: '#6e7079e8'
+      }
     },
     calculable: true,
     grid: {
@@ -298,10 +304,13 @@ function drawEChart6(data,title,headers){
       type: 'value',
       name: 'Inflationary Rewards Plus Emissions (in millions)',
       nameLocation: 'middle',
-      nameGap: '70',
       max: 1000000000,
+      nameGap: '120',
       nameTextStyle: {
         color: '#333'
+      },
+      nameTextStyle:{
+        fontSize: 14
       },
       axisLabel: {
         formatter: function (value, index) {
@@ -338,10 +347,12 @@ function drawEChart5(data,title,headers){
         type: 'value',
         name: index === 0 ? 'Annual Money Supply Growth Rate': 'Allocated Supply',
         nameLocation: 'middle',
-        nameGap: index === 0 ?'50': '100',
+        nameGap: '120',
         nameTextStyle: {
-          color: '#333'
+          //color: '#333',
+          fontSize: 12
         },
+
         axisLabel: index === 0 ? {
           formatter: function (value, index) {
               return value + '%';
@@ -378,7 +389,13 @@ function drawEChart5(data,title,headers){
     },
     legend: {
       data: headers,
-      bottom: '0'
+      bottom: '0',
+      itemGap: 15,
+      textStyle:{
+        fontSize: 11,
+        fontFamily: 'sans-serif',
+        color: '#6e7079e8'
+      }
     },
     calculable: true,
     grid: {
@@ -434,6 +451,12 @@ function drawEChart4(data,title,headers){
     legend: {
       data: headers,
       bottom: '0',
+      itemGap: 15,
+      textStyle:{
+        fontSize: 11,
+        fontFamily: 'sans-serif',
+        color: '#6e7079e8'
+      },
       data:[
         {
           name: 'Current Allocated',
@@ -458,10 +481,13 @@ function drawEChart4(data,title,headers){
       type: 'value',
       name: '$STORE Tokens Issued',
       nameLocation: 'middle',
-      nameGap: '100',
+      nameGap: '120',
       nameTextStyle: {
         color: '#333'
-      }
+      },
+      nameTextStyle:{
+        fontSize: 14
+      },
     },
     series: series,
   };
@@ -510,8 +536,13 @@ function drawEChart3(data,title,headers){
     },
     legend: {
       data: headers,
-      bottom: '0%',
-      itemGap: 15
+      bottom: '0',
+      itemGap: 15,
+      textStyle:{
+        fontSize: 11,
+        fontFamily: 'sans-serif',
+        color: '#6e7079e8'
+      }
     },
     calculable: true,
     grid: {
@@ -523,9 +554,12 @@ function drawEChart3(data,title,headers){
       type: 'value',
       name: 'Maximun inflation + emission per year',
       nameLocation: 'middle',
-      nameGap: '100',
+      nameGap: '120',
       nameTextStyle: {
         color: '#333'
+      },
+      nameTextStyle:{
+        fontSize: 14
       }
     },
     series: series,
@@ -579,21 +613,29 @@ function drawEChart2(data,title,headers){
     legend: {
       data: headers,
       bottom: '0',
-      itemGap: 15
+      itemGap: 15,
+      textStyle:{
+        fontSize: 12,
+        fontFamily: 'sans-serif',
+        color: '#6e7079e8'
+      }
     },
     calculable: true,
     grid: {
       show: true,
       top: '80',
-      bottom: '60',
+      bottom: '80',
     },
     yAxis: {
       type: 'value',
       name: 'Cumulative $STORE Tokens',
       nameLocation: 'middle',
-      nameGap: '100',
+      nameGap: '120',
       nameTextStyle: {
         color: '#333'
+      },
+      nameTextStyle:{
+        fontSize: 14
       }
     },
     series: series,
