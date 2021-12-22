@@ -14,6 +14,21 @@ const textStyle = {
   fontFamily: "Montserrat",
   fontSize: 10,
 };
+const titleStyle = {
+    textAlign: "center",
+    textVerticalAlign: "auto",
+    left: "50%",
+    top: "4%",
+}
+const legendStyle = {
+    bottom: "0",
+    itemGap: 15,
+    textStyle: {
+      fontSize: 11,
+      fontFamily: "sans-serif",
+      color: "#6e7079e8",
+    }
+}
 function parseNumbers(values) {
   return values?.map((d) => parseFloat(d?.replaceAll(",", "")));
 }

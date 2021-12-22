@@ -251,10 +251,7 @@ function drawEChart5(data, title, headers) {
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle
     },
     color,
     textStyle,
@@ -276,13 +273,7 @@ function drawEChart5(data, title, headers) {
     },
     legend: {
       data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle
     },
     calculable: true,
     grid: {
@@ -359,10 +350,7 @@ function drawEChart4(data, title, headers) {
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle
     },
     textStyle,
     xAxis: {
@@ -388,13 +376,7 @@ function drawEChart4(data, title, headers) {
     },
     legend: {
       data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle
     },
     calculable: true,
     grid: {
@@ -432,10 +414,7 @@ function drawEChart3(data, title, headers) {
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle
     },
     textStyle,
     xAxis: {
@@ -449,14 +428,7 @@ function drawEChart3(data, title, headers) {
       trigger: "axis",
     },
     legend: {
-      data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle,
       data: [
         {
           name: "Current Allocated",
@@ -527,10 +499,7 @@ function drawEChart2(data, title, headers) {
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle
     },
     textStyle,
     color,
@@ -546,13 +515,7 @@ function drawEChart2(data, title, headers) {
     },
     legend: {
       data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle
     },
     calculable: true,
     grid: {
@@ -602,10 +565,7 @@ function drawEChart1(data, title, headers) {
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle
     },
     textStyle,
     color,
