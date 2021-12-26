@@ -411,11 +411,13 @@ function drawEChart3(data, title, headers) {
       },
     });
   });
+  const _color = ['#009E96','#062587','#AF69C5']
   const option = {
     title: {
       text: title,
       ...titleStyle
     },
+    color: _color,
     textStyle,
     xAxis: {
       type: "category",
@@ -562,13 +564,15 @@ function drawEChart1(data, title, headers) {
       },
     });
   });
+  const _color = color;
+  _color[0] = '#dfdf02';
   const option = {
     title: {
       text: title,
       ...titleStyle
     },
     textStyle,
-    color,
+    color: _color,
     xAxis: {
       type: "category",
       data: dateList?.map((date) => date?.replaceAll(",", "-")),
