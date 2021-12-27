@@ -248,12 +248,22 @@ function drawEChart5(data, title, headers) {
       },
     });
   });
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '110';
+  _media[0].option.grid.left = '40';
   const option = {
     title: {
       text: title,
-      ...titleStyle
+      ...titleStyle,
     },
-    color,
+    color: [
+      "#DE2F8F",
+      "#12BC81",
+      "#254294",
+      "#0071C6",
+      "#F54A4A",
+      "#AF52C7",
+    ],
     textStyle,
     xAxis: {
       type: "category",
@@ -270,10 +280,11 @@ function drawEChart5(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       data: headers,
-      ...legendStyle
+      ...legendStyle,
     },
     calculable: true,
     grid: {
@@ -286,7 +297,7 @@ function drawEChart5(data, title, headers) {
       name: "Inflationary Rewards Plus Emissions (in millions)",
       nameLocation: "middle",
       max: 1000000000,
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
@@ -300,8 +311,14 @@ function drawEChart5(data, title, headers) {
       },
     },
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+  $(window).on('resize', function(){
+    if(myChart != null && myChart != undefined){
+      myChart.resize();
+    }
+});
 }
 function drawEChart4(data, title, headers) {
   const dateList = data?.Date;
@@ -331,12 +348,11 @@ function drawEChart4(data, title, headers) {
       name:
         index === 0 ? "Annual Money Supply Growth Rate" : "Allocated Supply",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         //color: '#333',
         fontSize: 12,
       },
-
       axisLabel:
         index === 0
           ? {
@@ -344,13 +360,16 @@ function drawEChart4(data, title, headers) {
                 return value + "%";
               },
             }
-          : {},
+          : axisLabel,
     });
   });
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '80';
+  _media[0].option.grid.right = '50';
   const option = {
     title: {
       text: title,
-      ...titleStyle
+      ...titleStyle,
     },
     textStyle,
     xAxis: {
@@ -362,6 +381,7 @@ function drawEChart4(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
+      confine: true,
       formatter: (params) => {
         return `
                   ${params[0]?.axisValue} <br />
@@ -376,7 +396,7 @@ function drawEChart4(data, title, headers) {
     },
     legend: {
       data: headers,
-      ...legendStyle
+      ...legendStyle,
     },
     calculable: true,
     grid: {
@@ -386,8 +406,14 @@ function drawEChart4(data, title, headers) {
     },
     yAxis,
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+  $(window).on('resize', function(){
+    if(myChart != null && myChart != undefined){
+      myChart.resize();
+    }
+});
 }
 function drawEChart3(data, title, headers) {
   const dateList = data?.Date;
@@ -411,11 +437,13 @@ function drawEChart3(data, title, headers) {
       },
     });
   });
-  const _color = ['#009E96','#062587','#AF69C5']
+  const _color = ["#009E96", "#062587", "#AF69C5"];
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '80';
   const option = {
     title: {
       text: title,
-      ...titleStyle
+      ...titleStyle,
     },
     color: _color,
     textStyle,
@@ -428,6 +456,7 @@ function drawEChart3(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       ...legendStyle,
@@ -455,17 +484,24 @@ function drawEChart3(data, title, headers) {
       type: "value",
       name: "$STORE Tokens Issued",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
       nameTextStyle: {
         fontSize: 14,
       },
+      axisLabel,
     },
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+  $(window).on('resize', function(){
+    if(myChart != null && myChart != undefined){
+      myChart.resize();
+    }
+});
 }
 function drawEChart2(data, title, headers) {
   const dateList = data?.Date;
@@ -501,7 +537,7 @@ function drawEChart2(data, title, headers) {
   const option = {
     title: {
       text: title,
-      ...titleStyle
+      ...titleStyle,
     },
     textStyle,
     color,
@@ -514,10 +550,11 @@ function drawEChart2(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       data: headers,
-      ...legendStyle
+      ...legendStyle,
     },
     calculable: true,
     grid: {
@@ -529,17 +566,24 @@ function drawEChart2(data, title, headers) {
       type: "value",
       name: "Maximun inflation + emission per year",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
       nameTextStyle: {
         fontSize: 14,
       },
+      axisLabel,
     },
     series: series,
+    media
   };
   myChart.setOption(option);
+  $(window).on('resize', function(){
+    if(myChart != null && myChart != undefined){
+      myChart.resize();
+    }
+});
 }
 function drawEChart1(data, title, headers) {
   const dateList = data?.Date;
@@ -564,24 +608,25 @@ function drawEChart1(data, title, headers) {
       },
     });
   });
-  const _color = color;
-  _color[0] = '#dfdf02';
+  const _color = JSON.parse(JSON.stringify(color));
+  _color[0] = "#dfdf02";
   const option = {
     title: {
       text: title,
-      ...titleStyle
+      ...titleStyle,
     },
     textStyle,
     color: _color,
     xAxis: {
       type: "category",
-      data: dateList?.map((date) => date?.replaceAll(",", "-")),
+      data: dateList?.map((date) => date?.replace(/\,/g,"-")),
       axisTick: {
         alignWithLabel: true,
       },
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       data: headers,
@@ -603,17 +648,24 @@ function drawEChart1(data, title, headers) {
       type: "value",
       name: "Cumulative $STORE Tokens",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
       nameTextStyle: {
         fontSize: 14,
       },
+      axisLabel,
     },
     series: series,
+    media
   };
   myChart.setOption(option);
+  $(window).on('resize', function(){
+    if(myChart != null && myChart != undefined){
+      myChart.resize();
+    }
+});
 }
 
 //#region - data load and formate functions - will go inside of </body> tag section on webflow.
