@@ -314,11 +314,7 @@ function drawEChart5(data, title, headers) {
     media: _media
   };
   myChart.setOption(option);
-  $(window).on('resize', function(){
-    if(myChart != null && myChart != undefined){
-      myChart.resize();
-    }
-});
+ resizeChart(myChart);
 }
 function drawEChart4(data, title, headers) {
   const dateList = data?.Date;
@@ -409,11 +405,7 @@ function drawEChart4(data, title, headers) {
     media: _media
   };
   myChart.setOption(option);
-  $(window).on('resize', function(){
-    if(myChart != null && myChart != undefined){
-      myChart.resize();
-    }
-});
+ resizeChart(myChart);
 }
 function drawEChart3(data, title, headers) {
   const dateList = data?.Date;
@@ -497,11 +489,7 @@ function drawEChart3(data, title, headers) {
     media: _media
   };
   myChart.setOption(option);
-  $(window).on('resize', function(){
-    if(myChart != null && myChart != undefined){
-      myChart.resize();
-    }
-});
+ resizeChart(myChart);
 }
 function drawEChart2(data, title, headers) {
   const dateList = data?.Date;
@@ -579,11 +567,7 @@ function drawEChart2(data, title, headers) {
     media
   };
   myChart.setOption(option);
-  $(window).on('resize', function(){
-    if(myChart != null && myChart != undefined){
-      myChart.resize();
-    }
-});
+ resizeChart(myChart);
 }
 function drawEChart1(data, title, headers) {
   const dateList = data?.Date;
@@ -661,11 +645,7 @@ function drawEChart1(data, title, headers) {
     media
   };
   myChart.setOption(option);
-  $(window).on('resize', function(){
-    if(myChart != null && myChart != undefined){
-      myChart.resize();
-    }
-});
+ resizeChart(myChart);
 }
 
 //#region - data load and formate functions - will go inside of </body> tag section on webflow.

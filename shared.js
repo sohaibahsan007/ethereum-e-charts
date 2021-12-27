@@ -107,5 +107,12 @@ const media = [
 function parseNumbers(values) {
   return values?.map((d) => parseFloat(d?.replace(/\,/g,"")));
 }
+function resizeChart(chart){
+  $(window).on('resize', function(){
+    if(chart != null && chart != undefined){
+      chart.resize();
+    }
+});
+}
 
 //#endregion - static code region.
