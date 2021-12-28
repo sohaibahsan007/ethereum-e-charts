@@ -24,7 +24,7 @@ Follow the guidelines below to integrate with Webflow.
 
  - First, Go to Setting -> **Custom Code**, then add these external scripts in **Head Code**
 
-`<script src="https://sohaibahsan007.github.io/ethereum-e-charts/echarts.min.js"></script>`    `<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>`    `<link  rel="preconnect"  href="https://fonts.googleapis.com">`  
+`<script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>`    `<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>`    `<link  rel="preconnect"  href="https://fonts.googleapis.com">`  
 `<link rel="preconnect"  href="https://fonts.gstatic.com"  crossorigin>`     
 `<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap"    rel="stylesheet">`
 
