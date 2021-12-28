@@ -23,7 +23,7 @@
   <div class="chart" id="echarts-5"></div>
   <script src="shared.js"></script>
   <script>
-    function drawEChart5(data, title, headers) {
+function drawEChart5(data, title, headers) {
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-5"));
   const series = [];
@@ -46,15 +46,22 @@
       },
     });
   });
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '110';
+  _media[0].option.grid.left = '40';
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle,
     },
-    color,
+    color: [
+      "#DE2F8F",
+      "#12BC81",
+      "#254294",
+      "#0071C6",
+      "#F54A4A",
+      "#AF52C7",
+    ],
     textStyle,
     xAxis: {
       type: "category",
@@ -71,16 +78,11 @@
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle,
     },
     calculable: true,
     grid: {
@@ -93,7 +95,7 @@
       name: "Inflationary Rewards Plus Emissions (in millions)",
       nameLocation: "middle",
       max: 1000000000,
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
@@ -107,8 +109,10 @@
       },
     },
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+ resizeChart(myChart);
 }
     // drawEChart5
 $.get(googleSheetUrl + "694509505&single=true&output=csv", function (csvStr) {

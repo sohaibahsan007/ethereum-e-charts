@@ -23,7 +23,7 @@
   <div class="chart" id="echarts-3"></div>
   <script src="shared.js"></script>
   <script>
-    function drawEChart3(data, title, headers) {
+   function drawEChart3(data, title, headers) {
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-3"));
   const series = [];
@@ -45,14 +45,15 @@
       },
     });
   });
+  const _color = ["#009E96", "#062587", "#AF69C5"];
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '80';
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle,
     },
+    color: _color,
     textStyle,
     xAxis: {
       type: "category",
@@ -63,16 +64,10 @@
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
-      data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle,
       data: [
         {
           name: "Current Allocated",
@@ -97,17 +92,20 @@
       type: "value",
       name: "$STORE Tokens Issued",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
       nameTextStyle: {
         fontSize: 14,
       },
+      axisLabel,
     },
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+ resizeChart(myChart);
 }
     // drawEChart3
 $.get(googleSheetUrl + "1834631508&single=true&output=csv", function (csvStr) {

@@ -23,7 +23,7 @@
   <div class="chart" id="echarts-4"></div>
   <script src="shared.js"></script>
   <script>
-    function drawEChart4(data, title, headers) {
+   function drawEChart4(data, title, headers) {
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-4"));
   const series = [];
@@ -51,12 +51,11 @@
       name:
         index === 0 ? "Annual Money Supply Growth Rate" : "Allocated Supply",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         //color: '#333',
         fontSize: 12,
       },
-
       axisLabel:
         index === 0
           ? {
@@ -64,16 +63,16 @@
                 return value + "%";
               },
             }
-          : {},
+          : axisLabel,
     });
   });
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = '80';
+  _media[0].option.grid.right = '50';
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle,
     },
     textStyle,
     xAxis: {
@@ -85,6 +84,7 @@
     },
     tooltip: {
       trigger: "axis",
+      confine: true,
       formatter: (params) => {
         return `
                   ${params[0]?.axisValue} <br />
@@ -99,13 +99,7 @@
     },
     legend: {
       data: headers,
-      bottom: "0",
-      itemGap: 15,
-      textStyle: {
-        fontSize: 11,
-        fontFamily: "sans-serif",
-        color: "#6e7079e8",
-      },
+      ...legendStyle,
     },
     calculable: true,
     grid: {
@@ -115,8 +109,10 @@
     },
     yAxis,
     series: series,
+    media: _media
   };
   myChart.setOption(option);
+ resizeChart(myChart);
 }
     // drawEChart4
 $.get(googleSheetUrl + "1895040396&single=true&output=csv", function (csvStr) {

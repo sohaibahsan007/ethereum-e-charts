@@ -23,7 +23,7 @@
   <div class="chart" id="echarts-1"></div>
   <script src="shared.js"></script>
   <script>
-    function drawEChart1(data, title, headers) {
+function drawEChart1(data, title, headers) {
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-1"));
   const series = [];
@@ -46,25 +46,25 @@
       },
     });
   });
+  const _color = JSON.parse(JSON.stringify(color));
+  _color[0] = "#dfdf02";
   const option = {
     title: {
       text: title,
-      textAlign: "center",
-      textVerticalAlign: "auto",
-      left: "50%",
-      top: "4%",
+      ...titleStyle,
     },
     textStyle,
-    color,
+    color: _color,
     xAxis: {
       type: "category",
-      data: dateList?.map((date) => date?.replaceAll(",", "-")),
+      data: dateList?.map((date) => date?.replace(/\,/g,"-")),
       axisTick: {
         alignWithLabel: true,
       },
     },
     tooltip: {
       trigger: "axis",
+      confine: true
     },
     legend: {
       data: headers,
@@ -86,17 +86,20 @@
       type: "value",
       name: "Cumulative $STORE Tokens",
       nameLocation: "middle",
-      nameGap: "120",
+      nameGap: "80",
       nameTextStyle: {
         color: "#333",
       },
       nameTextStyle: {
         fontSize: 14,
       },
+      axisLabel,
     },
     series: series,
+    media
   };
   myChart.setOption(option);
+ resizeChart(myChart);
 }
     // drawEChart1
 $.get(googleSheetUrl + "0&single=true&output=csv", function (csvStr) {
