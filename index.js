@@ -361,7 +361,7 @@ function drawEChart4(data, title, headers) {
   });
   const _media = JSON.parse(JSON.stringify(media));
   _media[0].option.grid.bottom = '80';
-  _media[0].option.grid.right = '50';
+  _media[0].option.grid.right = '60';
   const option = {
     title: {
       text: title,
@@ -610,7 +610,7 @@ function drawEChart1(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
-      confine: true
+      confine: true,
     },
     legend: {
       data: headers,

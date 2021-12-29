@@ -55,18 +55,23 @@ const media = [
     option: {
       title: {
         textStyle: {
-          width: '350',
+          width: '300',
           fontSize: 13
+        }
+      },
+      tooltip: {
+        textStyle: {
+          overflow: 'truncate',
+          fontSize: 10
         }
       },
       grid: {
         show: true,
         top: "85",
-        left: 50,
-        right: 10,
+        left: 55,
+        right: 20,
         bottom: "185",
       },
-
     },
   },
   {
@@ -78,6 +83,12 @@ const media = [
         textStyle: {
           width: '600',
           fontSize: 16
+        }
+      },
+      tooltip: {
+        textStyle: {
+          overflow: 'truncate',
+          fontSize: 12
         }
       },
       grid: {
@@ -95,6 +106,12 @@ const media = [
         textStyle: {
           width: '900',
           fontSize: 18
+        }
+      },
+      tooltip: {
+        textStyle: {
+          overflow: 'truncate',
+          fontSize: 14
         }
       },
       grid: {
