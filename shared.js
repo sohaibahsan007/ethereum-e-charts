@@ -122,7 +122,7 @@ const media = [
   },
 ];
 function parseNumbers(values) {
-  return values?.map((d) => parseFloat(d?.replace(/\,/g,"")));
+  return values?.map((d) => parseFloat(d?.replace(/\,/g,"")?.replace(/\$/g,"")));
 }
 function resizeChart(chart){
   $(window).on('resize', function(){

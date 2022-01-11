@@ -225,6 +225,134 @@
 // }
 
 //#region  - static draw functions region, will go inside of <head> tag section on webflow.
+function drawEChart6(data, title, headers) {
+  const dateList = data?.['USD Value'];
+  const myChart = echarts.init(document.getElementById("echarts-6"));
+  const series = [];
+  delete data?.Date;
+  const _color = ["#12BC81","#F54A4A",
+  "#0071C6",
+  "#DE2F8F",
+  "#AF52C7",
+  "#254294"];
+  headers
+    ?.filter(
+      (h) =>
+        h != 'USD Value' && h != 'Date' && h!='Total Rewards'
+    )
+    ?.forEach((h) => {
+      const _data = data?.[h];
+      series.push({
+        data: parseNumbers(_data),
+        type: "line",
+        name: h,
+        smooth: false,
+        smoothMonotone: "x",
+        symbol:  h === '$STORE Price'? "circle": "none",
+        symbolSize: h === '$STORE Price'? 8: 2,
+        yAxisIndex: h === '$STORE Price' ? 1 : 0,
+        label: {
+          show: h === '$STORE Price' ? true: false,
+          position: 'top',
+          fontSize: '13',
+          distance: 10,
+          color: _color[0],
+          formatter: (params) => {
+            return '$' + params?.data;
+          },
+        },
+        emphasis: {
+          focus: "series",
+        },
+        lineStyle: {
+          width: h === '$STORE Price' ? 3 : 2.5,
+          type: h === '$STORE Price' ? "dotted": "solid"
+        },
+      });
+    });
+
+  const option = {
+    title: {
+      text: 'Revenue by Channel (USD)',
+      ...titleStyle,
+    },
+    textStyle,
+    color: _color,
+    xAxis: {
+      type: "category",
+      data: dateList,
+      name: "Value (in USD)",
+      nameLocation: "middle",
+      nameGap: "40",
+      nameTextStyle: {
+        color: "#333",
+      },
+      axisTick: {
+        alignWithLabel: true,
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      confine: true,
+      formatter: (params) => {
+        let label = '';
+        for(let index = 0;index< params?.length;index ++){
+          label += `${index == 0 ? params[index]?.axisValue: ''} <br/>
+          ${params[index].marker} ${params[index].seriesName}:  <b>$${params[index].value?.toLocaleString()}</b>`;
+        }
+        return label;
+      },
+    },
+    legend: {
+      data: headers,
+      ...legendStyle,
+    },
+    calculable: true,
+    grid: {
+      show: true,
+      top: "60",
+      bottom: "80",
+    },
+    yAxis: [
+      {
+        type: "value",
+        name: "Revenue (USD)",
+        nameLocation: "middle",
+        nameGap: "80",
+        max: 150000000,
+        nameTextStyle: {
+          color: "#333",
+        },
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        axisLabel,
+      },
+      {
+        type: "value",
+        name: "$STORE Price",
+        nameLocation: "middle",
+        nameGap: "30",
+        max: 15,
+        nameTextStyle: {
+          color: "#333",
+        },
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        axisLabel: {
+          formatter: function (value, index) {
+           return '$'+ value;
+        }
+        }
+      },
+    ],
+    series: series,
+    media
+  };
+  myChart.setOption(option);
+ resizeChart(myChart);
+}
 function drawEChart5(data, title, headers) {
   const dateList = data?.Date;
   const myChart = echarts.init(document.getElementById("echarts-5"));
@@ -778,3 +906,23 @@ $.get(googleSheetUrl + "694509505&single=true&output=csv", function (csvStr) {
   // draw data
   drawEChart5(array_data, title, headers);
 });
+// drawEChart6
+$.get(googleSheetUrl + "476815357&single=true&output=csv", function (csvStr) {
+   // parse data using Papa Parse
+   let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false,
+  })?.data;
+  const title = data?.[0]?.[1];
+  const array_data = [];
+  array_data["Date"] = data?.[2]?.slice(2);
+  data = data?.slice(1);
+  // prepapre data
+  data?.forEach((d) => {
+    array_data[d[1]] = d.slice(2);
+  });
+  const headers = Object.keys(array_data);
+  // draw EChart 2
+  drawEChart6(array_data, title, headers);
+});
+
