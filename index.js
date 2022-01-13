@@ -240,7 +240,7 @@ function drawEChart7(data, title, headers) {
         smoothMonotone: "x",
         symbol: "none",
         yAxisIndex: h === "Bitcoins" ? 1 : 0,
-        xAxisIndex: h === "Bitcoins" ? 1 : 0,
+        xAxisIndex: h === "Bitcoins" ? 0 : 1,
         lineStyle: {
           type: "solid",
           width: 2.5,
@@ -306,6 +306,16 @@ function drawEChart7(data, title, headers) {
     tooltip: {
       trigger: "axis",
       confine: true,
+      formatter: (params) => {
+        let label = "";
+        for (let index = 0; index < params?.length; index++) {
+          label += `${index == 0 ? params[index]?.axisValue + " Blocks (thousand)" : ""}  <br/>
+          ${params[index].marker} ${params[index].seriesName}:  <b>${params[
+            index
+          ].value?.toLocaleString()}${index === 1 ? ' (Millions)': '%'}</b>`;
+        }
+        return label;
+      },
     },
     legend: {
       ...legendStyle,
