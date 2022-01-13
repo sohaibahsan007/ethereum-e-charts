@@ -224,22 +224,155 @@
 //   myChart.setOption(option);
 // }
 
-//#region  - static draw functions region, will go inside of <head> tag section on webflow.
+function drawEChart7(data, title, headers) {
+  const dateList = data?.["Date based on block height"];
+  const blockHeight = data?.["Block Height"];
+  const myChart = echarts.init(document.getElementById("echarts-7"));
+  const series = [];
+  headers?.forEach((h) => {
+    if (h === "Bitcoins" || h === "% Monetary Inflation") {
+      const _data = data?.[h];
+      series.push({
+        data: parseNumbers(_data),
+        type: "line",
+        name: h,
+        smooth: false,
+        smoothMonotone: "x",
+        symbol: "none",
+        yAxisIndex: h === "Bitcoins" ? 1 : 0,
+        xAxisIndex: h === "Bitcoins" ? 1 : 0,
+        lineStyle: {
+          type: "solid",
+          width: 2.5,
+        },
+        emphasis: {
+          focus: "series",
+        },
+      });
+    }
+  });
+  const _color = ["#AF69C5", "#009E96"];
+  const _media = JSON.parse(JSON.stringify(media));
+  _media[0].option.grid.bottom = "80";
+
+  const option = {
+    title: {
+      text: title,
+      ...titleStyle,
+    },
+    color: _color,
+    textStyle,
+    xAxis: [
+      {
+        type: "category",
+        name: "Blocks (thousand)",
+        nameLocation: "center",
+        nameGap: "30",
+        nameTextStyle: {
+          color: "#333",
+        },
+        data: parseNumbers(blockHeight)?.map(d => parseInt(d/1000)),
+        axisTick: {
+          alignWithLabel: true,
+        },
+         axisLabel: {
+          interval: 200,
+        },
+      },
+      {
+        type: "category",
+        data: dateList,
+        position: "top",
+        axisLine: {
+          lineStyle: {
+            color: "auto",
+          },
+        },
+        splitLine: {
+          show: true,
+          onGap: null,
+        },
+        axisLabel: {
+          interval: 200,
+        },
+        axisTick: {
+          alignWithLabel: true,
+        },
+        minorTick: {
+          show: true,
+        },
+      },
+    ],
+    tooltip: {
+      trigger: "axis",
+      confine: true,
+    },
+    legend: {
+      ...legendStyle,
+    },
+    calculable: true,
+    grid: [
+      {
+        show: true,
+        top: "100",
+        bottom: "20",
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "% Monetary Inflation",
+        nameLocation: "middle",
+        nameGap: "80",
+        max: 100,
+        min: 0,
+        nameTextStyle: {
+          color: "#333",
+        },
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        axisLabel: {
+          formatter: function (value, index) {
+            return value + "%";
+          },
+        },
+      },
+      {
+        type: "value",
+        name: "Bitcoins (in millions)",
+        nameLocation: "middle",
+        nameGap: "30",
+        nameTextStyle: {
+          color: "#333",
+        },
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        axisLabel,
+      },
+    ],
+    series: series,
+    media: _media,
+  };
+  myChart.setOption(option);
+  resizeChart(myChart);
+}
 function drawEChart6(data, title, headers) {
-  const dateList = data?.['USD Value'];
+  const dateList = data?.["USD Value"];
   const myChart = echarts.init(document.getElementById("echarts-6"));
   const series = [];
   delete data?.Date;
-  const _color = ["#12BC81","#F54A4A",
-  "#0071C6",
-  "#DE2F8F",
-  "#AF52C7",
-  "#254294"];
+  const _color = [
+    "#12BC81",
+    "#F54A4A",
+    "#0071C6",
+    "#DE2F8F",
+    "#AF52C7",
+    "#254294",
+  ];
   headers
-    ?.filter(
-      (h) =>
-        h != 'USD Value' && h != 'Date' && h!='Total Rewards'
-    )
+    ?.filter((h) => h != "USD Value" && h != "Date" && h != "Total Rewards")
     ?.forEach((h) => {
       const _data = data?.[h];
       series.push({
@@ -248,32 +381,34 @@ function drawEChart6(data, title, headers) {
         name: h,
         smooth: false,
         smoothMonotone: "x",
-        symbol:  h === '$STORE Price'? "circle": "none",
-        symbolSize: h === '$STORE Price'? 8: 2,
-        yAxisIndex: h === '$STORE Price' ? 1 : 0,
+        symbol: h === "$STORE Price" ? "circle" : "none",
+        symbolSize: h === "$STORE Price" ? 8 : 2,
+        yAxisIndex: h === "$STORE Price" ? 1 : 0,
         label: {
-          show: h === '$STORE Price' ? true: false,
-          position: 'top',
-          fontSize: '13',
+          show: h === "$STORE Price" ? true : false,
+          position: "top",
+          fontSize: "13",
           distance: 10,
           color: _color[0],
           formatter: (params) => {
-            return '$' + params?.data;
+            return "$" + params?.data;
           },
         },
         emphasis: {
           focus: "series",
         },
         lineStyle: {
-          width: h === '$STORE Price' ? 3 : 2.5,
-          type: h === '$STORE Price' ? "dotted": "solid"
+          width: h === "$STORE Price" ? 3 : 2.5,
+          type: h === "$STORE Price" ? "dotted" : "solid",
         },
       });
     });
-
+    const _media = JSON.parse(JSON.stringify(media));
+    _media[0].option.grid.bottom = "110";
+    _media[0].option.grid.left = "40";
   const option = {
     title: {
-      text: 'Revenue by Channel (USD)',
+      text: "Revenue by Channel (USD)",
       ...titleStyle,
     },
     textStyle,
@@ -295,10 +430,12 @@ function drawEChart6(data, title, headers) {
       trigger: "axis",
       confine: true,
       formatter: (params) => {
-        let label = '';
-        for(let index = 0;index< params?.length;index ++){
-          label += `${index == 0 ? params[index]?.axisValue: ''} <br/>
-          ${params[index].marker} ${params[index].seriesName}:  <b>$${params[index].value?.toLocaleString()}</b>`;
+        let label = "";
+        for (let index = 0; index < params?.length; index++) {
+          label += `${index == 0 ? params[index]?.axisValue : ""} <br/>
+          ${params[index].marker} ${params[index].seriesName}:  <b>$${params[
+            index
+          ].value?.toLocaleString()}</b>`;
         }
         return label;
       },
@@ -342,16 +479,16 @@ function drawEChart6(data, title, headers) {
         },
         axisLabel: {
           formatter: function (value, index) {
-           return '$'+ value;
-        }
-        }
+            return "$" + value;
+          },
+        },
       },
     ],
     series: series,
-    media
+    media: _media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
 function drawEChart5(data, title, headers) {
   const dateList = data?.Date;
@@ -377,21 +514,14 @@ function drawEChart5(data, title, headers) {
     });
   });
   const _media = JSON.parse(JSON.stringify(media));
-  _media[0].option.grid.bottom = '110';
-  _media[0].option.grid.left = '40';
+  _media[0].option.grid.bottom = "110";
+  _media[0].option.grid.left = "40";
   const option = {
     title: {
       text: title,
       ...titleStyle,
     },
-    color: [
-      "#DE2F8F",
-      "#12BC81",
-      "#254294",
-      "#0071C6",
-      "#F54A4A",
-      "#AF52C7",
-    ],
+    color: ["#DE2F8F", "#12BC81", "#254294", "#0071C6", "#F54A4A", "#AF52C7"],
     textStyle,
     xAxis: {
       type: "category",
@@ -408,7 +538,7 @@ function drawEChart5(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
-      confine: true
+      confine: true,
     },
     legend: {
       data: headers,
@@ -439,10 +569,10 @@ function drawEChart5(data, title, headers) {
       },
     },
     series: series,
-    media: _media
+    media: _media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
 function drawEChart4(data, title, headers) {
   const dateList = data?.Date;
@@ -488,8 +618,8 @@ function drawEChart4(data, title, headers) {
     });
   });
   const _media = JSON.parse(JSON.stringify(media));
-  _media[0].option.grid.bottom = '80';
-  _media[0].option.grid.right = '60';
+  _media[0].option.grid.bottom = "80";
+  _media[0].option.grid.right = "60";
   const option = {
     title: {
       text: title,
@@ -530,10 +660,10 @@ function drawEChart4(data, title, headers) {
     },
     yAxis,
     series: series,
-    media: _media
+    media: _media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
 function drawEChart3(data, title, headers) {
   const dateList = data?.Date;
@@ -559,7 +689,7 @@ function drawEChart3(data, title, headers) {
   });
   const _color = ["#009E96", "#062587", "#AF69C5"];
   const _media = JSON.parse(JSON.stringify(media));
-  _media[0].option.grid.bottom = '80';
+  _media[0].option.grid.bottom = "80";
   const option = {
     title: {
       text: title,
@@ -576,7 +706,7 @@ function drawEChart3(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
-      confine: true
+      confine: true,
     },
     legend: {
       ...legendStyle,
@@ -614,10 +744,10 @@ function drawEChart3(data, title, headers) {
       axisLabel,
     },
     series: series,
-    media: _media
+    media: _media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
 function drawEChart2(data, title, headers) {
   const dateList = data?.Date;
@@ -666,7 +796,7 @@ function drawEChart2(data, title, headers) {
     },
     tooltip: {
       trigger: "axis",
-      confine: true
+      confine: true,
     },
     legend: {
       data: headers,
@@ -692,10 +822,10 @@ function drawEChart2(data, title, headers) {
       axisLabel,
     },
     series: series,
-    media
+    media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
 function drawEChart1(data, title, headers) {
   const dateList = data?.Date;
@@ -731,7 +861,7 @@ function drawEChart1(data, title, headers) {
     color: _color,
     xAxis: {
       type: "category",
-      data: dateList?.map((date) => date?.replace(/\,/g,"-")),
+      data: dateList?.map((date) => date?.replace(/\,/g, "-")),
       axisTick: {
         alignWithLabel: true,
       },
@@ -770,13 +900,11 @@ function drawEChart1(data, title, headers) {
       axisLabel,
     },
     series: series,
-    media
+    media,
   };
   myChart.setOption(option);
- resizeChart(myChart);
+  resizeChart(myChart);
 }
-
-//#region - data load and formate functions - will go inside of </body> tag section on webflow.
 
 // drawEChart1
 $.get(googleSheetUrl + "0&single=true&output=csv", function (csvStr) {
@@ -908,8 +1036,8 @@ $.get(googleSheetUrl + "694509505&single=true&output=csv", function (csvStr) {
 });
 // drawEChart6
 $.get(googleSheetUrl + "476815357&single=true&output=csv", function (csvStr) {
-   // parse data using Papa Parse
-   let data = Papa.parse(csvStr, {
+  // parse data using Papa Parse
+  let data = Papa.parse(csvStr, {
     skipEmptyLines: true,
     header: false,
   })?.data;
@@ -926,3 +1054,30 @@ $.get(googleSheetUrl + "476815357&single=true&output=csv", function (csvStr) {
   drawEChart6(array_data, title, headers);
 });
 
+$.get(googleSheetUrl + "1709681637&single=true&output=csv", function (csvStr) {
+  // parse data using Papa Parse
+  let data = Papa.parse(csvStr, {
+    skipEmptyLines: true,
+    header: false,
+  })?.data;
+  const title = data?.[0]?.[0];
+  let headers = data?.[1];
+  data = data?.slice(2);
+  const array_data = [];
+  const dateIndex = headers?.findIndex(
+    (header) => header === "Date based on block height"
+  );
+  data = data?.filter((d) => d[dateIndex] <= 2038);
+  // prepapre data
+  headers?.forEach((h) => {
+    const index = headers?.findIndex((header) => header === h);
+    const _d = [];
+    data?.forEach((d) => {
+      _d.push(d[index]);
+    });
+    array_data[h] = _d;
+  });
+  headers = headers;
+  // draw data
+  drawEChart7(array_data, title, headers);
+});
