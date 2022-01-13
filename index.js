@@ -906,7 +906,8 @@ function drawEChart1(data, title, headers) {
   resizeChart(myChart);
 }
 
-// drawEChart1
+$( document ).ready(function() {
+  // drawEChart1
 $.get(googleSheetUrl + "0&single=true&output=csv", function (csvStr) {
   // parse data using Papa Parse
   let data = Papa.parse(csvStr, {
@@ -1081,3 +1082,5 @@ $.get(googleSheetUrl + "1709681637&single=true&output=csv", function (csvStr) {
   // draw data
   drawEChart7(array_data, title, headers);
 });
+});
+
