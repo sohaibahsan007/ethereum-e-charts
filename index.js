@@ -235,7 +235,7 @@ function drawEChart7(data, title, headers) {
       series.push({
         data: parseNumbers(_data),
         type: "line",
-        name: h,
+        name: h === "Bitcoins"? "Total Money Supply": "Growth Rate %",
         smooth: false,
         smoothMonotone: "x",
         symbol: "none",
@@ -312,7 +312,7 @@ function drawEChart7(data, title, headers) {
           label += `${index == 0 ? params[index]?.axisValue + " Blocks (thousand)" : ""}  <br/>
           ${params[index].marker} ${params[index].seriesName}:  <b>${params[
             index
-          ].value?.toLocaleString()}${index === 1 ? ' (Millions)': '%'}</b>`;
+          ].value?.toLocaleString()}${index === 0 ? ' (Millions)': '%'}</b>`;
         }
         return label;
       },
@@ -331,7 +331,7 @@ function drawEChart7(data, title, headers) {
     yAxis: [
       {
         type: "value",
-        name: "% Monetary Inflation",
+        name: " Growth Rate %",
         nameLocation: "middle",
         nameGap: "80",
         max: 100,
@@ -350,7 +350,7 @@ function drawEChart7(data, title, headers) {
       },
       {
         type: "value",
-        name: "Bitcoins (in millions)",
+        name: "Total Money Supply",
         nameLocation: "middle",
         nameGap: "30",
         nameTextStyle: {
@@ -392,12 +392,13 @@ function drawEChart6(data, title, headers) {
         smooth: false,
         smoothMonotone: "x",
         symbol: h === "$STORE Price" ? "circle" : "none",
-        symbolSize: h === "$STORE Price" ? 8 : 2,
+        symbolSize: h === "$STORE Price" ? 14 : 2,
         yAxisIndex: h === "$STORE Price" ? 1 : 0,
         label: {
           show: h === "$STORE Price" ? true : false,
           position: "top",
-          fontSize: "13",
+          fontSize: "14",
+          fontWeight: 'bold',
           distance: 10,
           color: _color[0],
           formatter: (params) => {
@@ -418,7 +419,7 @@ function drawEChart6(data, title, headers) {
     _media[0].option.grid.left = "40";
   const option = {
     title: {
-      text: "Revenue by Channel (USD)",
+      text: "Revenue per Governance Fund (USD Value)",
       ...titleStyle,
     },
     textStyle,
@@ -1058,7 +1059,16 @@ $.get(googleSheetUrl + "476815357&single=true&output=csv", function (csvStr) {
   data = data?.slice(1);
   // prepapre data
   data?.forEach((d) => {
-    array_data[d[1]] = d.slice(2);
+    if(d[1] === "Rewards to STORE Foundation (25%)"){
+      array_data["Rewards to Foundation"] = d.slice(2);
+    } else if(d[1] === "Rewards to Miners and Voters (70%)"){
+      array_data["Rewards to Miners and Voters"] = d.slice(2);
+    } else if(d[1] === "Rewards to Markets (5%)"){
+      array_data["Rewards to Markets"] = d.slice(2);
+    } else{
+      array_data[d[1]] = d.slice(2);
+    }
+
   });
   const headers = Object.keys(array_data);
   // draw EChart 2
